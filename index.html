@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>VLESS Nexus Pro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f6fb;--panel:#fff;--sunk:#eef1f8;--line:#d9dfee;--text:#10162b;--mute:#5d6786;--a:#3b6cf6;--b:#7c4dff;--ok:#12a36b;--warn:#c9830a;--shadow:0 20px 50px #1b2a5a1f;--grid:#1b2a5a0d;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#070a14;--panel:#0e1322;--sunk:#0a0e1b;--line:#1f2848;--text:#e8ecf8;--mute:#8993b3;--a:#6b92ff;--b:#a58bff;--ok:#3ddc97;--warn:#f0b64a;--shadow:0 30px 70px #0009;--grid:#ffffff08}}
+:root[data-theme="dark"]{--bg:#070a14;--panel:#0e1322;--sunk:#0a0e1b;--line:#1f2848;--text:#e8ecf8;--mute:#8993b3;--a:#6b92ff;--b:#a58bff;--ok:#3ddc97;--warn:#f0b64a;--shadow:0 30px 70px #0009;--grid:#ffffff08}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font:15px/1.55 Inter,"Segoe UI",system-ui,Arial,sans-serif;
+background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:44px 44px}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(600px 400px at 8% -5%,color-mix(in srgb,var(--a) 22%,transparent),transparent),radial-gradient(600px 400px at 100% 105%,color-mix(in srgb,var(--b) 20%,transparent),transparent)}
+.wrap{position:relative;max-width:1240px;margin:0 auto;padding:28px 20px 40px}
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:26px}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,var(--a),var(--b));display:grid;place-items:center;box-shadow:0 8px 24px color-mix(in srgb,var(--a) 45%,transparent)}
+.logo svg{width:24px;height:24px}
+h1{font:700 26px/1.1 "Space Grotesk",Inter,sans-serif;margin:0;letter-spacing:-.02em}
+.tag{color:var(--mute);font-size:13px;margin-top:3px}
+.hr{display:flex;align-items:center;gap:10px}
+.by{font-size:13px;color:var(--mute);padding:7px 12px;border:1px solid var(--line);border-radius:99px;background:var(--panel)}
+.by b{color:var(--text);font-weight:600}
+.icon{width:38px;height:38px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--text);cursor:pointer;display:grid;place-items:center}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 18px;display:flex;align-items:baseline;justify-content:space-between}
+.stat span{color:var(--mute);font-size:13px}
+.stat b{font:700 26px "Space Grotesk",sans-serif;font-variant-numeric:tabular-nums}
+.stat.ok b{color:var(--ok)}.stat.skip b{color:var(--warn)}
+.bench{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.pane{background:var(--panel);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);display:flex;flex-direction:column;min-width:0;overflow:hidden}
+.ph{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px 12px 18px;border-bottom:1px solid var(--line);min-height:58px}
+.ph h2{font:600 15px "Space Grotesk",Inter,sans-serif;margin:0}
+.tabs{display:inline-flex;background:var(--sunk);border:1px solid var(--line);border-radius:12px;padding:3px}
+.tabs button{border:0;background:none;color:var(--mute);font:500 13px Inter,sans-serif;padding:7px 14px;border-radius:9px;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--panel);color:var(--text);box-shadow:0 1px 4px #0003}
+.src{padding:14px 18px;border-bottom:1px solid var(--line);background:var(--sunk)}
+.src[hidden]{display:none}
+.row{display:flex;gap:10px}
+input[type=url],input[type=text]{flex:1;min-width:0;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:12px;padding:11px 14px;font:14px Inter,sans-serif}
+.drop{border:1.5px dashed var(--line);border-radius:12px;padding:18px;text-align:center;color:var(--mute);cursor:pointer;background:var(--panel)}
+.drop.over,.drop:hover{border-color:var(--a);color:var(--text)}
+textarea{flex:1;width:100%;min-height:340px;resize:vertical;border:0;outline:0;background:transparent;color:var(--text);padding:16px 18px;font:400 12.5px/1.65 "JetBrains Mono",ui-monospace,Consolas,monospace;white-space:pre;overflow:auto}
+.btn{border:1px solid var(--line);background:var(--panel);color:var(--text);font:600 13px Inter,sans-serif;padding:10px 16px;border-radius:12px;cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:var(--a)}
+.btn.pri{border:0;color:#fff;background:linear-gradient(135deg,var(--a),var(--b));box-shadow:0 8px 22px color-mix(in srgb,var(--a) 40%,transparent)}
+.btn.pri:hover{filter:brightness(1.08)}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.foot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px 12px 18px;border-top:1px solid var(--line);color:var(--mute);font-size:13px}
+.modebar{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin:18px 0 0}
+.modebar .lbl{color:var(--mute);font-size:13px}
+.modebar .tabs button{padding:8px 18px}
+.modehint{text-align:center;color:var(--mute);font-size:12.5px;margin:8px 0 0}
+.modehint code{font:12px "JetBrains Mono",monospace;background:var(--sunk);border:1px solid var(--line);border-radius:6px;padding:1px 6px}
+.run{display:flex;justify-content:center;margin:14px 0 0}
+.run .btn{padding:14px 34px;font-size:15px;border-radius:14px}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--ok);margin-right:8px}
+.dot.err{background:#e5484d}
+:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--text);color:var(--bg);padding:10px 18px;border-radius:12px;font-weight:600;font-size:14px;opacity:0;pointer-events:none;transition:.25s}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@media (max-width:860px){.bench{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr 1fr}.by{display:none}textarea{min-height:240px}.stat{flex-direction:column;gap:2px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="brand">
+    <div class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h11l-3-3M20 17H9l3 3"/></svg></div>
+    <div><h1>VLESS Nexus Pro</h1><div class="tag">Smart VLESS converter &amp; subscription manager</div></div>
+  </div>
+  <div class="hr"><span class="by">Crafted by <b>@SayeCipher</b></span><button class="icon" id="theme" aria-label="Toggle theme" title="Toggle theme">◐</button></div>
+</header>
+
+<section class="stats" aria-live="polite">
+  <div class="stat"><span>Lines read</span><b id="sRead">0</b></div>
+  <div class="stat ok"><span>Converted</span><b id="sOk">0</b></div>
+  <div class="stat skip"><span>Skipped</span><b id="sSkip">0</b></div>
+</section>
+
+<main class="bench">
+  <section class="pane">
+    <div class="ph"><h2>Input</h2>
+      <div class="tabs" role="tablist">
+        <button role="tab" aria-selected="true" data-t="paste">Paste</button>
+        <button role="tab" aria-selected="false" data-t="url">Subscription</button>
+        <button role="tab" aria-selected="false" data-t="file">File</button>
+      </div></div>
+    <div class="src" data-p="url" hidden><div class="row"><input id="url" type="url" placeholder="https://example.com/sub/your-token"><button class="btn pri" id="load">Load</button></div></div>
+    <div class="src" data-p="file" hidden><div class="drop" id="drop">Drop a config file here or click to browse</div><input id="file" type="file" hidden></div>
+    <textarea id="input" spellcheck="false" placeholder="Paste vless:// links or a Base64 subscription here"></textarea>
+    <div class="foot"><span id="inCount">0 characters</span><button class="btn" id="clear">Clear</button></div>
+  </section>
+
+  <section class="pane">
+    <div class="ph"><h2>Output</h2>
+      <div class="btns"><button class="btn" id="copy">Copy all</button><button class="btn" id="dl">Download .txt</button></div></div>
+    <textarea id="output" spellcheck="false" readonly placeholder="Converted configs appear here"></textarea>
+    <div class="foot"><span><i class="dot" id="dot"></i><span id="status">Ready</span></span></div>
+  </section>
+</main>
+
+<div class="modebar" role="group" aria-label="Conversion mode">
+  <span class="lbl">Mode</span>
+  <div class="tabs" id="modes">
+    <button aria-selected="true" data-m="1">Mode 1</button>
+    <button aria-selected="false" data-m="2">Mode 2</button>
+  </div>
+</div>
+<p class="modehint" id="modeHint"></p>
+<div class="run"><button class="btn pri" id="go">Convert configs</button></div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const FM='fm=%7B%22tcp%22%3A%20%5B%7B%22type%22%3A%20%22fragment%22%2C%20%22settings%22%3A%20%7B%22packets%22%3A%20%22tlshello%22%2C%20%22lengths%22%3A%20%5B%220%22%2C%20%22104%22%2C%20%221%22%5D%2C%20%22delays%22%3A%20%5B%220%22%5D%2C%20%22maxSplit%22%3A%20%220%22%7D%7D%2C%7B%22type%22%3A%20%22fragment%22%2C%20%22settings%22%3A%20%7B%22packets%22%3A%20%221-1%22%2C%20%22lengths%22%3A%20%5B%22114%22%2C%20%221%22%5D%2C%20%22delays%22%3A%20%5B%221%22%5D%2C%20%22maxSplit%22%3A%20%2211%22%7D%7D%5D%7D';
+const ECH='ech=cloudflare-ech.com+udp://1.1.1.1';
+let mode=1;
+const HINTS={1:'Mode 1: fragment, fp=unsafe and insecure parameters.',2:'Mode 2: adds only <code>'+ECH+'</code> to each config.'};
+const $=id=>document.getElementById(id);
+function decode(t){
+  if(/vless:\/\//i.test(t))return t;
+  try{
+    const b=atob(t.replace(/\s/g,'').replace(/-/g,'+').replace(/_/g,'/'));
+    return new TextDecoder().decode(Uint8Array.from(b,c=>c.charCodeAt(0)));
+  }catch(e){return t}
+}
+function fix(line){
+  const i=line.search(/vless:\/\//i);
+  if(i<0)return null;
+  const x=line.slice(i).trim(),h=x.indexOf('#');
+  let base=h<0?x:x.slice(0,h);
+  const tag=h<0?'':x.slice(h);
+  if(mode===2){
+    if(!/[?&]ech=/.test(base))base+=(base.includes('?')?'&':'?')+ECH;
+    return base+tag;
+  }
+  base=base.replace(/([?&])fp=chrome(?=&|$)/g,'$1fp=unsafe');
+  const has=k=>new RegExp('[?&]'+k+'=').test(base);
+  const add=p=>{base+=(base.includes('?')?'&':'?')+p};
+  if(!has('fm'))add(FM);
+  if(!has('insecure'))add('insecure=0');
+  if(!has('allowInsecure'))add('allowInsecure=0');
+  return base+tag;
+}
+function setStatus(m,err){$('status').textContent=m;$('dot').classList.toggle('err',!!err)}
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('show'),1800)}
+function convert(){
+  const lines=decode($('input').value).split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+  const out=lines.map(fix).filter(Boolean);
+  $('output').value=out.map(l=>l+'\n\n').join('');
+  $('sRead').textContent=lines.length;$('sOk').textContent=out.length;$('sSkip').textContent=Math.max(0,lines.length-out.length);
+  if(!lines.length)setStatus('Nothing to convert. Paste configs, load a subscription or add a file.',true);
+  else if(!out.length)setStatus('No vless:// links found in the input.',true);
+  else setStatus(out.length+' configuration'+(out.length>1?'s':'')+' converted')
+}
+async function loadSub(){
+  const u=$('url').value.trim();if(!u){setStatus('Enter a subscription URL first.',true);return}
+  setStatus('Loading subscription…');
+  try{const r=await fetch(u);const t=await r.text();$('input').value=decode(t);upd();setStatus('Subscription loaded. Press Convert configs.')}
+  catch(e){setStatus('Could not load the subscription. The server may block browser requests (CORS); paste the content instead.',true)}
+}
+function upd(){$('inCount').textContent=$('input').value.length.toLocaleString()+' characters'}
+function readFile(f){if(!f)return;const r=new FileReader;r.onload=()=>{$('input').value=r.result;upd();setStatus('File loaded: '+f.name)};r.readAsText(f)}
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.tabs button').forEach(x=>x.setAttribute('aria-selected',x===b));
+  document.querySelectorAll('.src').forEach(p=>p.hidden=p.dataset.p!==b.dataset.t)});
+function setMode(m){mode=m;
+  document.querySelectorAll('#modes button').forEach(x=>x.setAttribute('aria-selected',+x.dataset.m===m));
+  $('modeHint').innerHTML=HINTS[m];
+  if($('input').value.trim())convert()}
+document.querySelectorAll('#modes button').forEach(b=>b.onclick=()=>setMode(+b.dataset.m));
+setMode(1);
+$('go').onclick=convert;$('load').onclick=loadSub;$('input').oninput=upd;
+$('clear').onclick=()=>{$('input').value='';$('output').value='';['sRead','sOk','sSkip'].forEach(i=>$(i).textContent=0);upd();setStatus('Ready')};
+$('drop').onclick=()=>$('file').click();$('file').onchange=e=>readFile(e.target.files[0]);
+$('drop').ondragover=e=>{e.preventDefault();$('drop').classList.add('over')};
+$('drop').ondragleave=()=>$('drop').classList.remove('over');
+$('drop').ondrop=e=>{e.preventDefault();$('drop').classList.remove('over');readFile(e.dataTransfer.files[0])};
+$('copy').onclick=async()=>{if(!$('output').value){toast('Nothing to copy yet');return}
+  try{await navigator.clipboard.writeText($('output').value)}catch(e){$('output').select();document.execCommand('copy')}toast('Copied')};
+$('dl').onclick=()=>{if(!$('output').value){toast('Nothing to download yet');return}
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([$('output').value],{type:'text/plain'}));a.download='converted-vless.txt';a.click()};
+$('theme').onclick=()=>{const r=document.documentElement,d=matchMedia('(prefers-color-scheme:dark)').matches;
+  const cur=r.dataset.theme||(d?'dark':'light');r.dataset.theme=cur==='dark'?'light':'dark'};
+</script>
+</body>
+</html>
